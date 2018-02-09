@@ -91,8 +91,8 @@ public class TestCookieClient {
         HttpPost httpPost = new HttpPost(loginUrl);
         Map parameterMap = new HashMap();
         Map<String,String> mapHeader = new  HashMap<String, String>();
-        parameterMap.put("username", "huainian_cl@126.com");
-        parameterMap.put("pwd", "8b358d9e5a669346324d2dc4560ebf07");
+        parameterMap.put("username", "xxx账号");
+        parameterMap.put("pwd", "xxx密码 md5加密");
         parameterMap.put("imgcode", "");
         parameterMap.put("f", "json");
 
