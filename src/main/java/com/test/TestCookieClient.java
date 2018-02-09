@@ -49,7 +49,7 @@ public class TestCookieClient {
 
     // 创建CookieStore实例
     static CookieStore cookieStore = null;
-
+    CookiesHandle ch = new CookiesHandle();
     static HttpClientContext context = null;
     String loginUrl = "https://mp.weixin.qq.com/cgi-bin/bizlogin?action=startlogin";
     String doLoginReferUrl = "https://mp.weixin.qq.com/cgi-bin/bizlogin?action=validate&lang=zh_CN&account=huainian_cl@126.com";
@@ -84,9 +84,21 @@ public class TestCookieClient {
         // // HttpClient
         // CloseableHttpClient client = httpClientBuilder.build();
         // 直接创建client
-        cookieStore = new BasicCookieStore();
+
+        CookieStore oldCoolie = ch.myGetCookies();
+        boolean hasOldCookie = false;
+        if(oldCoolie!=null){
+            cookieStore = oldCoolie;
+            hasOldCookie = true;
+        }else{
+            cookieStore = new BasicCookieStore();
+        }
         CloseableHttpClient client = HttpClients.custom().setDefaultCookieStore(cookieStore).build();
         //CloseableHttpClient client = HttpClients.createDefault();
+
+        if(!hasOldCookie){
+            System.out.println("有旧cookie,后续处理");
+        }
 
         HttpPost httpPost = new HttpPost(loginUrl);
         Map parameterMap = new HashMap();
@@ -217,6 +229,8 @@ public class TestCookieClient {
                 }
             }
             System.out.println("cookie store5:" + cookieStore.getCookies());
+
+            ch.saveCookies(cookieStore);
             if("".equals(fakeid)){
                 System.out.println("未获取到fakeid,请检查是不是有该公众号");
             }
